@@ -1,0 +1,52 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+button {
+    border: initial;
+    background-color: initial;
+    color: inherit;
+    cursor: pointer;
+
+    &:focus {
+        outline: initial;
+    }
+}
+
+.screen {
+    display: block;
+    height: 32px;
+    margin: 0 13px;
+    padding: 0 2px;
+    border: none;
+    border-bottom: 1px solid #dddddd;
+    line-height: 32px;
+    text-align: right;
+}
+
+.calc {
+    display: inline-block;
+
+    &-btn {
+        text-align: center;
+        color: chocolate;
+
+        button {
+            padding: 15px;
+            border-radius: 5px;
+
+            &:hover {
+                background-color: #eeeeee;
+            }
+            &:active {
+                opacity: 0.75;
+            }
+        }
+    }
+}
+
+.number {
+    color: black;
+}
