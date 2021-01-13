@@ -2,7 +2,32 @@ import { Component } from '@angular/core';
 
 const Operators = ['+', '-', '*', '/'];
 
-const parenthesesRe = /\([^()]+\)/g;
+const priorRe = /\((?:[+\-*\/=\^]*\d+){2,}\)/g;
+
+const equalNumRe = /(=[+\-]?\d+)/g;
+
+const opeRe = /([+\-*\/\^])/;
+
+const plusAndMinusRe = /[+\-]+/;
+
+function splitFm(fm: string): string[] {
+    return fm
+        .split(equalNumRe)
+        .map((subFm) => (subFm[0] === '=' ? simplifyNumAbs(subFm.replace('=', '')) : subFm.split(opeRe)))
+        .flat(1);
+}
+
+function simplifyNumAbs(num: string): string {
+    return num.replace(plusAndMinusRe, (match) => {
+        let isPositive = true;
+        for (const ope of match) {
+            if (ope === '-') {
+                isPositive = !isPositive;
+            }
+        }
+        return isPositive ? '' : '-';
+    });
+}
 
 @Component({
     selector: 'app-calculator',
@@ -13,7 +38,7 @@ export class CalculatorComponent {
     formula: string;
 
     constructor() {
-        console.log(this.seperateFormula('2*((1-3)/3*(2+4))+5(5/2)'));
+        console.log(this.seperateFormula('2*(2+5(5+1)^5)+4'));
     }
 
     clear(): void {
@@ -27,14 +52,23 @@ export class CalculatorComponent {
     }
 
     private arithmeticCompute(formula: string): number {
-        const result: (string | number)[] = formula.split(/[\+\-\*\/]/);
+        let splitedFm: (string | number)[] = splitFm(formula);
+        let result: (string | number)[] = [];
 
-        result.slice(0).forEach((el) => {
+        splitedFm.forEach((el) => {
             if (isNaN(+el)) {
                 result.push(el);
             } else {
-                if (result[result.length - 1] === '*' || '/') {
-                    const ope = result.pop();
+                if (result.includes('*') || result.includes('/')) {
+                    let ope = result.pop();
+                    const midOpe = [];
+                    const isPositive = simplifyPosAndNeg(midOpe);
+
+                    while (ope !== '*' && ope !== '/') {
+                        midOpe.push(ope);
+                        ope = result.pop();
+                    }
+
                     const firstNum = result.pop();
 
                     if (ope === '*') {
@@ -42,15 +76,20 @@ export class CalculatorComponent {
                     } else if (ope === '/') {
                         result.push(+firstNum / +el);
                     }
+                } else {
+                    result.push(el);
                 }
             }
         });
 
-        result.slice(0).forEach((el) => {
+        splitedFm = result;
+        result = [];
+
+        splitedFm.forEach((el) => {
             if (isNaN(+el)) {
                 result.push(el);
             } else {
-                if (result[result.length - 1] === '+' || '-') {
+                if (result[result.length - 1] === '+' || result[result.length - 1] === '-') {
                     const ope = result.pop();
                     const firstNum = result.pop() || 0;
 
@@ -59,6 +98,8 @@ export class CalculatorComponent {
                     } else if (ope === '-') {
                         result.push(+firstNum - +el);
                     }
+                } else {
+                    result.push(el);
                 }
             }
         });
@@ -66,22 +107,21 @@ export class CalculatorComponent {
         return +result[0];
     }
 
-    private seperateFormula(formula: string): string[][] {
-        const matchResult = formula.matchAll(parenthesesRe);
+    private seperateFormula(formula: string): number {
+        const matchResult = formula.matchAll(priorRe);
         const result = [];
         let hasMatch: boolean;
 
         for (const match of matchResult) {
             hasMatch = true;
-            formula = formula.replace(match[0], '$');
-            result.push(match[0]);
+            const matchFm = match[0].slice(1, -1);
+            formula = formula.replace(match[0], `=${this.arithmeticCompute(matchFm)}`);
         }
 
         if (hasMatch) {
-            const outerPart = this.seperateFormula(formula);
-            return [result, ...outerPart];
+            return this.seperateFormula(formula);
         } else {
-            return [[formula]];
+            return this.arithmeticCompute(formula);
         }
     }
 }
