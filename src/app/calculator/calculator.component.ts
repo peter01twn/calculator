@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 const Operators = ['+', '-', '*', '/'];
 
-const priorRe = /\((?:[+\-*\/=\^]*\d+){2,}\)/g;
+const priorRe = /\((?:[+\-*\/=\^]*(?:\d|\.)+){2,}\)/g;
 
-const equalNumRe = /(=[+\-]?\d+)/g;
+const equalNumRe = /(=[+\-]?(?:\d|\.)+)/g;
 
 const opeRe = /([+\-*\/\^])/;
 
@@ -13,8 +13,9 @@ const plusAndMinusRe = /[+\-]+/;
 function splitFm(fm: string): string[] {
     return fm
         .split(equalNumRe)
-        .map((subFm) => (subFm[0] === '=' ? simplifyNumAbs(subFm.replace('=', '')) : subFm.split(opeRe)))
-        .flat(1);
+        .map((subFm) => (subFm[0] === '=' ? subFm.replace('=', '') : subFm.split(opeRe)))
+        .flat(1)
+        .filter((el) => el !== '');
 }
 
 function simplifyNumAbs(num: string): string {
@@ -38,7 +39,7 @@ export class CalculatorComponent {
     formula: string;
 
     constructor() {
-        console.log(this.seperateFormula('2*(2+5(5+1)^5)+4'));
+        console.log(this.seperateFormula('2*((2/5)*(5+1)*5)/2+4'));
     }
 
     clear(): void {
@@ -47,28 +48,17 @@ export class CalculatorComponent {
 
     enterNum(): void {}
 
-    calcResult(): void {
-        const formated = this.seperateFormula(this.formula);
-    }
+    calcResult(): void {}
 
     private arithmeticCompute(formula: string): number {
         let splitedFm: (string | number)[] = splitFm(formula);
-        let result: (string | number)[] = [];
 
-        splitedFm.forEach((el) => {
+        splitedFm = splitedFm.reduce((result, el) => {
             if (isNaN(+el)) {
                 result.push(el);
             } else {
-                if (result.includes('*') || result.includes('/')) {
-                    let ope = result.pop();
-                    const midOpe = [];
-                    const isPositive = simplifyPosAndNeg(midOpe);
-
-                    while (ope !== '*' && ope !== '/') {
-                        midOpe.push(ope);
-                        ope = result.pop();
-                    }
-
+                if (result[result.length - 1] === '*' || result[result.length - 1] === '/') {
+                    const ope = result.pop();
                     const firstNum = result.pop();
 
                     if (ope === '*') {
@@ -80,12 +70,10 @@ export class CalculatorComponent {
                     result.push(el);
                 }
             }
-        });
+            return result;
+        }, []);
 
-        splitedFm = result;
-        result = [];
-
-        splitedFm.forEach((el) => {
+        splitedFm = splitedFm.reduce((result, el) => {
             if (isNaN(+el)) {
                 result.push(el);
             } else {
@@ -102,14 +90,14 @@ export class CalculatorComponent {
                     result.push(el);
                 }
             }
-        });
+            return result;
+        }, []);
 
-        return +result[0];
+        return +splitedFm[0];
     }
 
     private seperateFormula(formula: string): number {
         const matchResult = formula.matchAll(priorRe);
-        const result = [];
         let hasMatch: boolean;
 
         for (const match of matchResult) {
