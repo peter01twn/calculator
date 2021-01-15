@@ -1,3 +1,11 @@
+@mixin clearFloat {
+    &::after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+}
+
 *,
 *::before,
 *::after {
@@ -15,15 +23,33 @@ button {
     }
 }
 
+.topbar {
+    @include clearFloat();
+    width: 155px;
+    margin: 0 13px;
+    padding: 0 2px;
+    overflow: hidden;
+}
+
+.prev-result {
+    height: 12px;
+    min-width: 100%;
+    margin-bottom: 4px;
+    font-size: 12px;
+    text-align: left;
+    color: #444444;
+    float: right;
+}
+
 .screen {
     display: block;
     height: 32px;
-    margin: 0 13px;
-    padding: 0 2px;
+    min-width: 100%;
     border: none;
     border-bottom: 1px solid #dddddd;
     line-height: 32px;
     text-align: right;
+    float: right;
 }
 
 .calc {

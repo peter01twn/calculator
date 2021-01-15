@@ -1,30 +1,33 @@
 <div class="calc">
-    <p class="screen"></p>
+    <div class="topbar">
+        <p class="prev-result">{{ history }}</p>
+        <p class="screen">{{ formula }}</p>
+    </div>
     <table>
         <colgroup></colgroup>
         <tr class="calc-row">
-            <td class="calc-btn"><button>AC</button></td>
-            <td class="calc-btn"><button><</button></td>
-            <td class="calc-btn"><button></button></td>
-            <td class="calc-btn"><button>÷</button></td>
+            <td class="calc-btn" (click)="backspace()"><button><</button></td>
+            <td class="calc-btn" (click)="enter('(')"><button>(</button></td>
+            <td class="calc-btn" (click)="enter(')')"><button>)</button></td>
+            <td class="calc-btn" (click)="enter('/')"><button>÷</button></td>
         </tr>
         <tr class="calc-row">
-            <td *ngFor="let num of [7,8,9]" class="calc-btn number"><button>{{ num }}</button></td>
-            <td class="calc-btn"><button>×</button></td>
+            <td *ngFor="let num of [7,8,9]" class="calc-btn number" (click)="enter(num)"><button>{{ num }}</button></td>
+            <td class="calc-btn" (click)="enter('*')"><button>×</button></td>
         </tr>
         <tr class="calc-row">
-            <td *ngFor="let num of [4,5,6]" class="calc-btn number"><button>{{ num }}</button></td>
-            <td class="calc-btn"><button>-</button></td>
+            <td *ngFor="let num of [4,5,6]" class="calc-btn number" (click)="enter(num)"><button>{{ num }}</button></td>
+            <td class="calc-btn" (click)="enter('-')"><button>-</button></td>
         </tr>
         <tr class="calc-row">
-            <td *ngFor="let num of [1,2,3]" class="calc-btn number"><button>{{ num }}</button></td>
-            <td class="calc-btn"><button>+</button></td>
+            <td *ngFor="let num of [1,2,3]" class="calc-btn number" (click)="enter(num)"><button>{{ num }}</button></td>
+            <td class="calc-btn" (click)="enter('+')"><button>+</button></td>
         </tr>
         <tr class="calc-row">
-            <td class="calc-btn number"><button>0</button></td>
-            <td class="calc-btn number"><button>00</button></td>
-            <td class="calc-btn number"><button>.</button></td>
-            <td class="calc-btn"><button>=</button></td>
+            <td class="calc-btn" (click)="clear()"><button>AC</button></td>
+            <td class="calc-btn number" (click)="enter(0)"><button>0</button></td>
+            <td class="calc-btn number" (click)="enter('.')"><button>.</button></td>
+            <td class="calc-btn" (click)="calcResult()"><button>=</button></td>
         </tr>
     </table>
 </div>
