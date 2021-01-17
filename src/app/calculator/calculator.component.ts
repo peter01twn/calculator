@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { calcFormula, isNum } from './calculate-utils';
+import { MathLib } from '../math-lib/math-lib';
 
 const endWithNumOrRightParenth = /(\d|\))$/;
 
+function isNum(v: any): boolean {
+    return !isNaN(+v);
+}
 @Component({
     selector: 'app-calculator',
     templateUrl: './calculator.component.html',
@@ -12,8 +15,6 @@ export class CalculatorComponent {
     history: string;
 
     formula = '';
-
-    constructor() {}
 
     enter(numOrOpe: string | number): void {
         if (isNum(numOrOpe) || numOrOpe === '(') {
@@ -41,6 +42,6 @@ export class CalculatorComponent {
 
     calcResult(): void {
         this.history = this.formula;
-        this.formula = calcFormula(this.formula).toString();
+        this.formula = MathLib.evaluate(this.formula).toString();
     }
 }
