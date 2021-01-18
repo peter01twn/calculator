@@ -1,11 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { CalculatorComponent } from './calculator/calculator.component';
+import { MathSymbolPipe } from './calculator/math-symbol.pipe';
 
 describe('AppComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [AppComponent, CalculatorComponent],
+            declarations: [AppComponent, CalculatorComponent, MathSymbolPipe],
         }).compileComponents();
     });
 

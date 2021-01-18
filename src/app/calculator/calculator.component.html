@@ -1,7 +1,11 @@
 <div class="calc">
     <div class="topbar">
-        <p class="prev-result">{{ history }}</p>
-        <p class="screen">{{ formula }}</p>
+        <p class="prev-result">{{ history | mathSymbol }}</p>
+        <p class="screen">
+            <span>{{ formula | mathSymbol }}</span>
+            <span class="typing-line"></span>
+            <span>555</span>
+        </p>
     </div>
     <table>
         <colgroup></colgroup>
