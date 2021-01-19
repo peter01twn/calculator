@@ -6,6 +6,7 @@ const endWithNumOrRightParenth = /(\d|\))$/;
 function isNum(v: any): boolean {
     return !isNaN(+v);
 }
+
 @Component({
     selector: 'app-calculator',
     templateUrl: './calculator.component.html',

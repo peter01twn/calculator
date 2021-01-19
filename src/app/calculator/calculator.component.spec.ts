@@ -31,6 +31,10 @@ describe('CalculatorComponent', () => {
         component.formula = '-';
         component.enter('+');
         expect(component.formula).toBe('+');
+
+        component.formula = '12';
+        component.enter('+');
+        expect(component.formula).toBe('12+');
     });
 
     test('enter number', () => {
