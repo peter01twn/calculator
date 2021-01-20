@@ -1,0 +1,19 @@
+<div class="c-popup__wrap">
+    <div class="c-popup__content">
+        <div class="o-statusBox o-statusBox--failure">
+            <img src="assets/images/icons/others/failure-og.svg" class="o-statusBox__img">
+            <p class="o-statusBox__msg">{{ title }}</p>
+            <p class="o-statusBox__desc u-tac">{{ description }}</p>
+        </div>
+    </div>
+    <div class="c-popup__actions">
+        <div class="l-actions l-actions--popup">
+            <div class="l-actions__item">
+                <a appDialogClose class="o-btn o-btn--secondary">取消</a>
+            </div>
+            <div class="l-actions__item">
+                <a [appDialogClose]="true" class="o-btn o-btn--primary">確定</a>
+            </div>
+        </div>
+    </div>
+</div>
