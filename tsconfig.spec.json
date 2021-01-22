@@ -4,10 +4,12 @@
         "outDir": "./out-tsc/spec",
         "types": [
             "jest", // 1
-            "node"
+            "node",
+            "jquery"
         ],
         "esModuleInterop": true, // 2
-        "emitDecoratorMetadata": true // 3
+        "emitDecoratorMetadata": true, // 3
+        "allowSyntheticDefaultImports": true
     },
     "files": ["src/test.ts", "src/polyfills.ts"],
     "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]

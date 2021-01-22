@@ -13,8 +13,6 @@ import {
 } from '@angular/core';
 import { DialogConfig } from './dialog-config';
 import { DialogRef } from './dialog-ref';
-import { SuccessDialogComponent } from './dialogs/success-dialog/success-dialog.component';
-import { MfpDialogComponent } from './mfp-dialog/mfp-dialog.component';
 
 export const DIALOG_DEFAULT_CONFIG = new InjectionToken<DialogConfig>('dialog-default-config');
 export const DIALOG_COMPONENT_TYPE = new InjectionToken<DialogConfig>('dialog-component-type');
@@ -59,14 +57,6 @@ export class DialogService {
         @Inject(DIALOG_COMPONENT_TYPE) private dialogComponentType: Type<any>,
         @Optional() @Inject(DIALOG_DEFAULT_CONFIG) private defaultConfig: DialogConfig
     ) {}
-
-    /**
-     * 操作成功
-     * @returns DialogRef
-     */
-    success(): DialogRef {
-        return this.open(SuccessDialogComponent, { data: { title: '操作成功!' } });
-    }
 
     /**
      * Opens a modal dialog containing the given component.
@@ -168,7 +158,7 @@ export class DialogService {
                     useValue: dialogRef,
                 },
                 {
-                    provide: MfpDialogComponent,
+                    provide: this.dialogComponentType,
                     useValue: containerRef,
                 },
                 {
@@ -199,7 +189,7 @@ export class DialogService {
             ],
         });
 
-        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MfpDialogComponent);
+        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.dialogComponentType);
         const componentRef = componentFactory.create(containerInjector);
         componentRef.instance.id = this.id;
         componentRef.instance.childComponentType = componentType;
