@@ -1,5 +1,6 @@
 import { Type } from '@angular/core';
 import { Observable } from 'rxjs';
+import { DialogConfig } from './dialog-config';
 
 export const enum DialogState {
     BEFORE_OPEN,
@@ -23,6 +24,8 @@ export abstract class DialogContainerBase {
     childComponentType: Type<any>;
 
     abstract stateChange: Observable<any>;
+
+    constructor(public config: DialogConfig) {}
 
     abstract close(result: any): void;
     abstract hidden(): void;

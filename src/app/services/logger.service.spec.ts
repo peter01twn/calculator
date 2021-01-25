@@ -47,4 +47,18 @@ describe('LoggerService', () => {
             expect(logs).toHaveLength(0);
         });
     });
+
+    test('should return last log', () => {
+        const service = new LoggerService();
+        const msgs = ['log 1', 'log 2'];
+        const subscribeLast = jest.fn((log) => log && log.msg);
+        service.last.subscribe(subscribeLast);
+
+        msgs.forEach((msg) => service.add(msg));
+
+        expect(subscribeLast).toHaveBeenCalledTimes(3);
+        expect(subscribeLast).toHaveNthReturnedWith(1, undefined);
+        expect(subscribeLast).toHaveNthReturnedWith(2, msgs[0]);
+        expect(subscribeLast).toHaveNthReturnedWith(3, msgs[1]);
+    });
 });
