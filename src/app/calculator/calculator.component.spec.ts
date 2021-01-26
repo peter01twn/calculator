@@ -3,6 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CalculatorComponent } from './calculator.component';
 import { MathSymbolPipe } from './math-symbol.pipe';
 
+jest.mock('../math-lib/math-lib');
+
 describe('CalculatorComponent', () => {
     let fixure: ComponentFixture<CalculatorComponent>;
     let component: CalculatorComponent;

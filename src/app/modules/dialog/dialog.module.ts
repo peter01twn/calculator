@@ -4,17 +4,15 @@ import { CommonModule } from '@angular/common';
 
 import { DialogService, DIALOG_COMPONENT_TYPE } from './dialog.service';
 import { DialogCloseDirective } from './dialog-close.directive';
-import { SuccessDialogComponent } from './dialogs/success-dialog/success-dialog.component';
 
 /**
  * dialog module
  */
 @NgModule({
-    declarations: [DialogCloseDirective, SuccessDialogComponent],
+    declarations: [DialogCloseDirective],
     imports: [CommonModule],
-    entryComponents: [SuccessDialogComponent],
     providers: [DialogService],
-    exports: [DialogCloseDirective, SuccessDialogComponent],
+    exports: [DialogCloseDirective],
 })
 export class DialogModule {
     /**
