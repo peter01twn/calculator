@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewContainerRef } from '@angular/core';
 import { MathLib } from '../math-lib/math-lib';
 
 const endWithNumOrRightParenth = /(\d|\))$/;

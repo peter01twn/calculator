@@ -2,7 +2,7 @@ import { ComponentRef } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { DialogConfig } from './dialog-config';
-import { DialogState } from './mfp-dialog/mfp-dialog-config';
+import { DialogState } from './dialog-container';
 
 /**
  * Dialog reference which refers to the current dialog.

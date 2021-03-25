@@ -47,6 +47,16 @@ describe('CollectCheckboxFormControl', () => {
             control.setValue(new CollectCheckboxValue('3', true));
             expect(control.value.length).toBe(1);
         });
+
+        test('should reset value when input falsthy value or empty array', () => {
+            const control = new CollectCheckboxFormControl(['56']);
+
+            expect(control.value).toContain('56');
+
+            control.setValue(undefined);
+
+            expect(control.value).toHaveLength(0);
+        });
     });
 
     test('recive overmax event when setValue more than max', () => {
